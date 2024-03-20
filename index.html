@@ -1,1 +1,253 @@
-Hallo ...!
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+    
+
+</head>
+<body>
+    <form id="meinFormular">    
+<input type="text" id="firma" placeholder="Firma" /><br />
+<input type="text" id="ansprechpartner" placeholder="Ansprechpartner" /><br />
+<input type="text" id="strasse" placeholder="Straße" /><br />
+<input type="text" id="plz" placeholder="PLZ" /><br />
+<input type="text" id="ort" placeholder="Ort" /><br />
+<input type="text" id="fahrzeug" placeholder="Fahrzeug" /><br />
+<input type="text" id="kontrollschild" placeholder="Kontrollschild" /><br />
+<input type="text" id="chassisnr" placeholder="Chassisnr." /><br />
+<input type="text" id="km-stand" placeholder="KM-Stand" /><br />
+<input type="text" id="total" placeholder="Total" /><br />
+
+        <button type="button" id="generate-pdf">PDF generieren</button>
+
+        
+      </form>
+
+      <button id="addFields">Neue Zeile</button>
+      <div id="eingabefelderContainer"></div>
+        
+      <script src="settings.js"></script>
+      <script src="summe.js"></script>
+      <script>
+      
+      document.getElementById('generate-pdf').addEventListener('click', function() {
+        const firma = document.getElementById('firma').value;
+    const ansprechpartner = document.getElementById('ansprechpartner').value;
+    const strasse = document.getElementById('strasse').value;
+    const plz = document.getElementById('plz').value;
+    const ort = document.getElementById('ort').value;
+    const fahrzeug = document.getElementById('fahrzeug').value;
+    const kontrollschild = document.getElementById('kontrollschild').value;
+    const chassisnr = document.getElementById('chassisnr').value;
+    const kmStand = document.getElementById('km-stand').value;
+    const total2 = document.getElementById('total').value;
+    const total3 = ((total2/100)*8.1);
+    const total4 = total3.toFixed(2) + ' Chf';
+    const total33 = ((total2*1.081)*1);
+    const total6 = total33.toFixed(2) + ' Chf';
+
+    const doc = new window.jspdf.jsPDF();
+
+  
+    
+    doc.setFontSize(7); 
+    doc.setFont("helvetica", "bold");
+    doc.text(data[0].FirmenName +', '+data[0].Strasse+', '+data[0].PlzOrt, 10, 49);
+    doc.line(10, 50, 80, 50);
+
+    doc.setFontSize(9);
+    doc.setFont("helvetica", "normal");
+    doc.text('Tel.: ' +data[0].Tel, 140, 50);   
+    doc.text('Mail: ' +data[0].Mail, 140, 54); 
+    doc.text('Web.: ' +data[0].Web, 140, 58); 
+    doc.text('MwSt.: ' +data[0].Mwst, 140, 62); 
+    doc.text('Bank: ' +data[0].Bank, 140, 66); 
+    doc.text('IBAN: ' +data[0].Iban, 140, 70); 
+    doc.text('Auftragsdatum: ' + datumString, 140, 85);
+    
+    doc.setFontSize(12);
+    doc.setFont("helvetica", "bold");
+    doc.text('Offerte Nr.: 88997', 10, 85); 
+
+
+
+    doc.setFontSize(10);
+    doc.setFont("helvetica", "normal");
+    doc.text(firma, 10, 55);
+    doc.text(ansprechpartner, 10, 60);
+    doc.text(strasse, 10, 65);
+    doc.text(plz, 10, 70);
+    doc.text(ort, 20, 70);
+
+    doc.setFontSize(8);
+    doc.line(10, 92, 200, 92);
+    doc.text('Fahrzeug: ' + fahrzeug, 10, 95);
+    doc.text('KM-Stand: ' + kmStand, 10, 99);
+    doc.text('Kontrollschild: ' + kontrollschild, 85, 95);
+    doc.text('Chassisnr.: ' + chassisnr, 85, 99);
+    doc.text('1.Inv.Setzung: ' , 140, 95);
+    doc.text('Annahme: ' + 'I.Ferizi', 140, 99);
+    doc.line(10, 101, 200, 101);
+
+    doc.setFontSize(8);
+    doc.setFont("helvetica", "bold");
+    doc.text('Art.', 10, 104);
+    doc.text('Bezeichnung', 35, 104);
+    doc.text('Menge', 135, 104);
+    doc.text('Preis', 155, 104);
+    doc.text('Total', 175, 104);
+    doc.line(10, 105, 200, 105);
+
+    doc.setFont("helvetica", "normal");
+    const inputs = document.querySelectorAll('.dynamischesFeld');
+    let yOffset = 110;
+    let xOffset = 10; // Startposition für das erste Feld
+    const xAbstaende = [25, 100, 20, 20, 20]; 
+
+    inputs.forEach((input, index) => {
+        // Verwende den aktuellen Abstand basierend auf der Position des Feldes innerhalb der Gruppe
+        // Der Modulo Operator `(index % 5)` wird verwendet, um bei jedem neuen Satz von 5 Feldern zurückzusetzen
+        const aktuellerAbstand = xAbstaende[index % 5];
+
+        doc.text(`${input.value}`, xOffset, yOffset);
+        
+        // Aktualisiere xOffset für das nächste Feld basierend auf dem aktuellen Abstand
+        xOffset += aktuellerAbstand;
+
+        // Überprüfung, ob eine neue Zeile begonnen werden soll
+        if ((index + 1) % 5 === 0) {
+            yOffset += 5; // Beginne eine neue Zeile
+            xOffset = 10; // Setze x zurück zum Start der Zeile
+        }
+    });
+
+    
+    doc.line(10,  yOffset + 1, 200,  yOffset + 1);
+    doc.setFont("helvetica", "bold");
+    doc.text('Total excl.', 150, yOffset + 5);
+    doc.text('MwSt. 8.1% ', 150, yOffset + 10);
+    doc.text('Total inkl. MwSt.', 150, yOffset + 15);
+
+
+    doc.setFont("helvetica", "normal");
+    doc.text(total2 + ' Chf', 175, yOffset + 5);
+    doc.text(total4, 175, yOffset + 10);
+    doc.text(total6, 175, yOffset + 15);
+    
+
+    
+    doc.setFontSize(6);
+    doc.text('Gültigkeit dieser Offerte: 30 Tage',10, 283);
+    doc.text('Aktueller Stundenansatz Werkstatt: ' + hSatz + '.00 CHF (excl. Mwst.)',10, 287);
+
+
+
+    window.open(doc.output('datauristring'), '_blank');
+    //doc.save('Werkstattauftrag_240320.pdf');
+});
+
+
+
+//felder hinzufügen
+document.getElementById('addFields').addEventListener('click', function(event) {
+    event.preventDefault(); // Verhindert das Neuladen der Seite
+
+    const container = document.getElementById('eingabefelderContainer');
+    const platzhalterTexte = ["Bezeichnung", "Menge", "Preis", "Total"];
+
+    let gruppe = document.createElement('div');
+    gruppe.className = 'feldGruppe';
+
+    // Erstelle ein Auswahlfeld anstelle des ersten Textfeldes
+    let auswahl = document.createElement('select');
+    auswahl.className = 'dynamischesFeld';
+    const optionen = ['Material', 'Arbeits-h'];
+    optionen.forEach(optionText => {
+        let option = document.createElement('option');
+        option.value = optionText;
+        option.text = optionText;
+        auswahl.appendChild(option);
+    });
+    gruppe.appendChild(auswahl);
+
+    // Erstelle die restlichen Felder, insgesamt 5, da "Total" nun das 6. Feld ist
+    let felder = [];
+    for (let i = 1; i <= 4; i++) {
+        let input = document.createElement('input');
+        input.type = 'text';
+        input.className = 'dynamischesFeld';
+        input.placeholder = platzhalterTexte[i-1]; // Anpassung für richtige Platzhaltertexte
+        gruppe.appendChild(input);
+        felder.push(input);
+    }
+
+    // Event Listener für Auswahlfeld
+    auswahl.addEventListener('change', function() {
+        if (this.value === 'Arbeits-h') {
+            felder[2].value = hSatz; // Das vierte Feld ist jetzt "Menge"
+        } else {
+            felder[2].value = ''; // Zurücksetzen, wenn "Artikel" ausgewählt wird
+        }
+        berechneTotalUndGesamtsumme();
+    });
+
+    // Funktion zur Berechnung des Totals
+    
+    function berechneTotalUndGesamtsumme() {
+        const menge = parseFloat(felder[1].value) || 0;
+        const preis = parseFloat(felder[2].value) || 0;
+        const total = menge * preis;
+        felder[3].value = total ? total.toFixed(2) : '';
+        
+        aktualisiereGesamtsumme();
+    }
+
+    // Event Listener für die Felder "Menge" und "Preis" zur Aktualisierung des Totals
+    felder[1].addEventListener('input', berechneTotalUndGesamtsumme); // Listener für "Menge"
+    felder[2].addEventListener('input', berechneTotalUndGesamtsumme); // Listener für "Preis"
+
+    // Entfernen-Schaltfläche hinzufügen
+    let entfernenButton = document.createElement('button');
+    entfernenButton.textContent = 'Entfernen';
+    entfernenButton.type = 'button';
+    entfernenButton.onclick = function() {
+        container.removeChild(gruppe);
+        aktualisiereGesamtsumme(); // Aktualisiere die Gesamtsumme, wenn eine Gruppe
+    };
+    gruppe.appendChild(entfernenButton);
+
+    container.appendChild(gruppe);
+    berechneTotalUndGesamtsumme();
+});
+
+
+// Funktion zur Aktualisierung der Gesamtsumme aller "Total"-Felder
+function aktualisiereGesamtsumme() {
+    const container = document.getElementById('eingabefelderContainer');
+    const totalFelder = container.querySelectorAll('.feldGruppe .dynamischesFeld:nth-child(5)');
+    let gesamtsumme = 0;
+    
+
+    totalFelder.forEach(feld => {
+        gesamtsumme += parseFloat(feld.value) || 0;
+    });
+    globaleGesamtsumme = gesamtsumme;
+    totaltotal();
+    // Speichere die Gesamtsumme in einer Variablen oder einem unsichtbaren Feld
+    // Hier als Beispiel: Ausgabe in der Konsole
+    
+}
+let globaleGesamtsumme = 0;
+function totaltotal() {
+    document.getElementById("total").value = globaleGesamtsumme.toFixed(2);
+}
+
+
+
+      </script>
+</body>
+</html>
