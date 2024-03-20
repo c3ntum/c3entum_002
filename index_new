@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>c3ntum-CRM_V.1.0</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+.container {  display: grid;
+  grid-template-columns: 180px 1fr 1fr;
+  grid-template-rows: 10vh 90vh;
+  gap: 0px 0px;
+  grid-auto-flow: row;
+  grid-template-areas:
+    "logo top top"
+    "menu page page";
+}
+
+.menu { 
+    grid-area: menu; 
+    background: rgb(1,23,41);
+    background: linear-gradient(207deg, rgba(1,23,41,1) 64%, rgba(132,45,253,1) 100%);
+}
+
+.page { grid-area: page; }
+.logo { grid-area: logo; background-color:rgb(1,23,41); }
+.top { grid-area: top; background-color:rgb(27, 27, 27); }
+
+#logo {
+    height:60px;
+    float:left;
+}
+#logotext {
+    float:right;
+    color:#ffffff;
+    
+    font-size:16px;
+    margin-right:15px;
+}
+
+
+
+ul {
+    list-style-type: none;
+    margin-left:0px;
+    padding-left:10px;
+}
+li {
+    color:rgb(255, 255, 255);
+    font-size:14px;
+    padding:10px;
+    border-radius:7px;
+    margin:10px;
+    background-color:rgba(0,0,0, 0.2);
+    margin-left:0px;
+    cursor:pointer;
+}
+li:hover {
+    background: rgb(132,45,253, 0.7);
+}
+
+iframe {
+    width:100%;
+    height:98%;
+    border-width:0px;
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <div id="logotext">
+                <h2>FairEasy</h2>  
+                </div>
+                <image id="logo" src="icons/logo.webp"></image>
+        </div>
+        <div class="menu"> 
+        <ul>
+            <li>Dashboard</li>
+            <li>Kostenvoranschlag</li>
+        </ul>
+        
+        </div>
+        
+        <div class="page"><iframe src="estimate.html"></iframe></div>
+        <div class="top"></div>
+      </div>
+</body>
+</html>
