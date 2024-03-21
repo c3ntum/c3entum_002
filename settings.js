@@ -1,19 +1,19 @@
 var data = [
     {
       FirmenName: "FairEasy Autohandel Ferizi",
-      Strasse: "Strasse 34",
-      PlzOrt: "4562 Eiken",
+      Strasse: "Römerstrasse 22a",
+      PlzOrt: "4314 Zeiningen",
       Wohnort: "München",
-      Tel: "079 000 00 00",
-      Mail: "mail@mail.ch",
-      Web: "www.web.ch",
-      Mwst: "CHE-256.23.23",
-      Bank: "Bankname",
-      Iban: "CH2356456458799",
+      Tel: "+41(0)78 864 06 26",
+      Mail: "faireasy-autohandel@outlook.com",
+      Web: "-",
+      Mwst: "CHE-439.889.999",
+      Bank: "Post Finance",
+      Iban: "CH31 0900 0000 1631 8404 6",
     }
 ]
 
-let hSatz = 158;
+let hSatz = 80;
 
 //Datum
 var jetzt = new Date();
