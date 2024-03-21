@@ -21,7 +21,13 @@
 <input type="text" id="chassisnr" placeholder="Chassisnr." /><br />
 <input type="text" id="km-stand" placeholder="KM-Stand" /><br />
 <input type="text" id="total" placeholder="Total" /><br />
-
+<br>
+<select type="text" id="invoice">
+    <option value="Rechnung">Rechnung</option>
+    <option value="Offerte">Offerte</option>
+</select>
+<input type="text" id="invoice2" placeholder="Rechnungs- /Offerte Nr."/> <br/>
+<br>
         <button type="button" id="generate-pdf">PDF generieren</button>
 
         
@@ -44,6 +50,8 @@
     const kontrollschild = document.getElementById('kontrollschild').value;
     const chassisnr = document.getElementById('chassisnr').value;
     const kmStand = document.getElementById('km-stand').value;
+    const invoice = document.getElementById('invoice').value;
+    const invoice2 = document.getElementById('invoice2').value;
     const total2 = document.getElementById('total').value;
     const total3 = ((total2/100)*8.1);
     const total4 = total3.toFixed(2) + ' Chf';
@@ -71,7 +79,7 @@
     
     doc.setFontSize(12);
     doc.setFont("helvetica", "bold");
-    doc.text('Offerte Nr.: 88997', 10, 85); 
+    doc.text(invoice + ' Nr.: ' + invoice2, 10, 85); 
 
 
 
@@ -138,10 +146,16 @@
     doc.text(total4, 175, yOffset + 10);
     doc.text(total6, 175, yOffset + 15);
     
+let zahlsatz; 
 
+if (invoice === "Rechnung") {
+    zahlsatz = 'Bitte überweisen Sie den Betrag von ' + total6 + ' innerhalb von 30 Tagen auf unser Postkonto';
+} else {
+    zahlsatz = 'Gültigkeit dieser Offerte: 30 Tage';
+}
     
     doc.setFontSize(6);
-    doc.text('Gültigkeit dieser Offerte: 30 Tage',10, 283);
+    doc.text(zahlsatz,10, 283);
     doc.text('Aktueller Stundenansatz Werkstatt: ' + hSatz + '.00 CHF (excl. Mwst.)',10, 287);
 
 
