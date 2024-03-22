@@ -4,43 +4,268 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link href='https://fonts.googleapis.com/css?family=Open Sans' rel='stylesheet'>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
     
+    <style>
+body {
+    background-color:rgb(240, 248, 255, 0.7);
+    font-family: 'Open Sans';
+}
+
+h2 {
+    font-size:17px;
+}
+
+input:focus {
+    outline:none;
+}
+.section{
+    width:auto;
+    background-color:white;
+    margin:10px;
+    margin-top:20px;
+    padding-left:20px;
+    padding-right:20px;
+    padding-top:5px;
+    padding-bottom:20px;
+    border-color:lightgrey;
+    border-width:1px;
+    border-style:solid;
+}
+.box {
+    background-color:rgb(240, 248, 255, 0.7);
+    
+    
+}
+
+input {
+    width:100%;
+    border:none;
+    padding:5px;
+    
+}
+table{
+    width:100%;
+    font-size:13px;
+    border-collapse: collapse;
+    text-align:left;
+}
+th {
+    background-color:rgba(72, 103, 240, 0.973);
+    padding:5px;
+    border-width: 1px;
+    border-style:solid;
+    border-color:rgb(226, 226, 226);
+    padding-left:10px;
+    color:white;
+}
+td:first-child, td:nth-child(3){
+    width:80px;
+    padding-right:25px;
+    border-width: 0px 0px 1px 1px;
+    border-style:solid;
+    border-color:rgb(226, 226, 226);
+    padding-left:10px;
+}
+td:nth-child(2), td:nth-child(4){
+    width:50% -80px;
+    padding-right:11px;
+    border-width: 0px 1px 1px 0px;
+    border-style:solid;
+    border-color:rgb(226, 226, 226);
+}
+
+.dynamischesFeld {
+    margin-left:2px;
+    border-width:0px 0px 1px 0px;
+    border-style:solid;
+    border-color:rgb(226, 226, 226);
+    
+}
+
+#itemlist td {
+   padding:5px;
+   border-width: 0px 0px 1px 0px;
+}
+
+.dynamischesFeld:first-child {
+    width:10%;
+}
+.dynamischesFeld:nth-child(2) {
+    width:60%
+}
+.dynamischesFeld:nth-child(3), .dynamischesFeld:nth-child(4), .dynamischesFeld:nth-child(5), .dynamischesFeld:nth-child(6) {
+    width:7%
+}
+.dynamischesFeld:nth-child(5) {
+    font-weight:bold;
+}
+
+button, #invoice {
+    border-width:0px;
+    border-radius:4px;
+    padding:7px;
+    padding-left:10px;
+    padding-right:10px;
+    background-color:rgb(5, 99, 240);
+    cursor:pointer;
+    font-family: 'Open Sans';
+    color:white;
+}
+
+button:hover {
+    background-color:rgb(5, 99, 240, 0.8);
+}
+.close {
+    background-color:rgb(240, 248, 255, 0.7);
+    border-width:0px;
+    font-weight:bold;
+    cursor:pointer;
+    color:black;
+}
+.close:hover {
+    color:red;
+    background-color:rgb(240, 248, 255, 0.7);
+}
+
+#total {
+    width:100px;
+    float:right;
+    background-color:rgb(156, 255, 156);
+    padding:6px;
+    font-weight:bold;
+    border-width:2px;
+    border-style:solid;
+    border-color:black;
+}
+#topbox {
+    padding-top:20px;
+    background-color:rgb(240, 248, 255, 0.7);
+}
+
+
+</style>
 
 </head>
 <body>
-    <form id="meinFormular">    
-<input type="text" id="firma" placeholder="Firma" /><br />
-<input type="text" id="ansprechpartner" placeholder="Ansprechpartner" /><br />
-<input type="text" id="strasse" placeholder="Straße" /><br />
-<input type="text" id="plz" placeholder="PLZ" /><br />
-<input type="text" id="ort" placeholder="Ort" /><br />
-<input type="text" id="fahrzeug" placeholder="Fahrzeug" /><br />
-<input type="text" id="kontrollschild" placeholder="Kontrollschild" /><br />
-<input type="text" id="chassisnr" placeholder="Chassisnr." /><br />
-<input type="text" id="km-stand" placeholder="KM-Stand" /><br />
+    <div class="section" id="topbox">
+        <div class="box" >   
+            <select type="text" id="invoice">
+                <option value="Rechnung">Rechnung</option>
+                <option value="Offerte">Offerte</option>
+            </select>
+            <button id="addFields">&#9998; Neue Zeile</button>
+            <button type="button" id="generate-pdf">&#128640; PDF generieren</button>
+            <input type="text" id="total" placeholder="Total">
+        </div>
+        </div>
 
+<div class="section">
+    <h2>FairEasy Automobile</h2>
+<form class="box" id="kunde">   
+<table>
+<tr><th colspan="4">Kunde</th></tr>  
+<tr>
+    <td>Firma</td>
+    <td><input type="text" id="firma" placeholder="Firma"></td>
+    <td>Strasse</td>
+    <td><input type="text" id="strasse" placeholder="Straße"></td>
+</tr>
+<tr>
+    <td>Name</td>
+    <td><input type="text" id="ansprechpartner" placeholder="Ansprechpartner"></td>
+    <td>Plz.</td>
+    <td><input type="text" onkeyup="findOrt()" id="plz" placeholder="PLZ"></td>
+</tr>
+<tr>
+    <td></td>
+    <td></td>
+    <td>Ort.</td>
+    <td><input type="text" id="ort" placeholder="Ort"></td>
+</tr>
+
+</table> 
+</form>
 <br>
-<select type="text" id="invoice">
-    <option value="Rechnung">Rechnung</option>
-    <option value="Offerte">Offerte</option>
-</select>
-<input type="text" id="invoice2" placeholder="Rechnungs- /Offerte Nr."/> <br/>
+<form class="box" id="fahrzeug">   
+    <table>
+        <tr><th colspan="4">Fahrzeug</th></tr>  
+<tr>
+    <td>Fahrzeug</td>
+    <td><input type="text" id="fahrzeug" placeholder="Fahrzeug"></td>
+    <td>Kennzeichen</td>
+    <td><input type="text" id="kontrollschild" placeholder="Kontrollschild"></td>
+</tr>
+<tr>
+    <td>Km.</td>
+    <td><input type="text" id="km-stand" placeholder="KM-Stand"></td>
+    <td>Vin. Nr.</td>
+    <td><input type="text" id="chassisnr" placeholder="Chassisnr."></td>
+</tr>
+</table> 
+</form>
+
+
+</div>
+
+<div class="section">
+    <br>
+<div class="box" >   
+    <table id="itemlist">
+       <tr>
+        <th colspan="4">Rechnung / Offerte</th>
+       </tr>
+       <tr>
+        <td>Rg. Nr.</td>
+        <td><input type="text" id="invoice2" placeholder="Rechnungs- /Offerte Nr."></td>
+        <td>Auftr. Nr</td>
+        <td><input type="text" id="" placeholder="Auftragsnummer"></td>
+    </tr>
+    </table> 
+</div>
+
+
+</div>
+<div class="section">
+    <br>
+<div class="box" >   
+    <table id="itemlist">
+       <tr>
+        <th colspan="6">Positionen</th>
+       </tr>
+       <tr>
+        <td style="width:10%">Art.</td>
+        <td style="width:60%">Beschreibung</td>
+        <td style="width:7%">Menge</td>
+        <td style="width:7%">Preis</td>
+        <td style="width:7%">Total</td>
+        <td style="width:7%">Löschen</td>
+    </tr>
+    </table>
+    <div id="eingabefelderContainer"></div>
+    
+</div>
 <br>
-        <button type="button" id="generate-pdf">PDF generieren</button>
+
+</div>
+
+
+
+
+
+
+
+      
 
         
-      </form>
+    
 
-      <button id="addFields">Neue Zeile</button>
-      <div id="eingabefelderContainer"></div>
-
-    <br>
-    <input type="text" id="total" placeholder="Total" /><br />
-    <br>
+        
       <script src="settings.js"></script>
       <script src="summe.js"></script>
+      <script src="adress.js"></script>
       <script>
       
       document.getElementById('generate-pdf').addEventListener('click', function() {
@@ -68,9 +293,9 @@
     doc.setFontSize(7); 
     doc.setFont("helvetica", "bold");
     doc.text(data[0].FirmenName +', '+data[0].Strasse+', '+data[0].PlzOrt, 10, 49);
-    doc.line(10, 50, 90, 50);
+    doc.line(10, 50, 80, 50);
 
-    doc.setFontSize(8);
+    doc.setFontSize(9);
     doc.setFont("helvetica", "normal");
     doc.text('Tel.: ' +data[0].Tel, 140, 50);   
     doc.text('Mail: ' +data[0].Mail, 140, 54); 
@@ -149,7 +374,7 @@
     doc.text(total4, 175, yOffset + 10);
     doc.text(total6, 175, yOffset + 15);
     
-let zahlsatz; 
+    let zahlsatz; 
 
 if (invoice === "Rechnung") {
     zahlsatz = 'Bitte überweisen Sie den Betrag von ' + total6 + ' innerhalb von 30 Tagen auf unser Postkonto';
@@ -160,6 +385,7 @@ if (invoice === "Rechnung") {
     doc.setFontSize(6);
     doc.text(zahlsatz,10, 283);
     doc.text('Aktueller Stundenansatz Werkstatt: ' + hSatz + '.00 CHF (excl. Mwst.)',10, 287);
+
 
 
 
@@ -229,8 +455,9 @@ document.getElementById('addFields').addEventListener('click', function(event) {
 
     // Entfernen-Schaltfläche hinzufügen
     let entfernenButton = document.createElement('button');
-    entfernenButton.textContent = 'Entfernen';
+    entfernenButton.textContent = 'x';
     entfernenButton.type = 'button';
+    entfernenButton.className = 'close';
     entfernenButton.onclick = function() {
         container.removeChild(gruppe);
         aktualisiereGesamtsumme(); // Aktualisiere die Gesamtsumme, wenn eine Gruppe
