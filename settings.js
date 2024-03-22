@@ -1,11 +1,11 @@
 var data = [
     {
-      FirmenName: "FairEasy Autohandel Ferizi",
+      FirmenName: "FairEasy Automobile Ferizi",
       Strasse: "Römerstrasse 22a",
       PlzOrt: "4314 Zeiningen",
       Wohnort: "München",
       Tel: "+41(0)78 864 06 26",
-      Mail: "faireasy-autohandel@outlook.com",
+      Mail: "faireasy-automobile@outlook.com",
       Web: "-",
       Mwst: "CHE-439.889.999",
       Bank: "Post Finance",
